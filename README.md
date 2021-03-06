@@ -14,6 +14,12 @@
 
 ### Frictionlessness
 
+### Horse first, cart second
+
+Too often, software engineering is worried first (or only) about **what the software does** and not so much about **how does software end up in the hands of the user**. Because that has to be someone else's job, surely.
+
+I disagree with this approach. So the first order of business in this project will be to make it extremely easy to obtain the software. Even before said software does anything useful.
+
 ## Documentation
 
 ## Background
