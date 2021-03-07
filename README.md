@@ -183,7 +183,7 @@ Assuming that you have the README.md in the current directory.
 ```sh
 eval "$( cat README.md | awk '/^```bash/{flag=1;next}/^```/{flag=0}flag' )"
 # followed by
-air --help
+air1 --help
 ```
 
 ## Background
