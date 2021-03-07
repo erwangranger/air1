@@ -53,7 +53,7 @@ air1 --version
 
 function air1_version(){
     air1_header
-    printf "You are running air1 version Alpha\n"
+    printf "You are running air1 version Alpha 0.0.1\n"
 }
 
 
@@ -154,6 +154,7 @@ function air1_help(){
 ```bash
 -h  /  --help : this help screen
 --version     : the version of air1 you are using
+--install     : installs the latest version of air1
 ```
 
 </details>
@@ -221,6 +222,11 @@ while [[ $# -gt 0 ]]; do
             air1_install
             shift
             ;;
+        *)
+            printf "\n\nOne or more arguments were not recognized: \n$@"
+            air1_help
+            shift
+    ;;
     esac
 done
 
