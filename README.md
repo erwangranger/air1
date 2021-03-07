@@ -63,6 +63,62 @@ function air1_version(){
 
 ### Install it
 
+If you want to permanently setup `air1`, you have to:
+
+1. First, run the command to [set it up temporarily](#try-it)
+2. Execute:
+
+    ```sh
+    air1 --install
+    ```
+
+If you are curious as to how it installs itself, unfold the code below:
+
+<details><summary>code</summary>
+
+```bash
+function air1_install(){
+    local github_url_base=https://raw.githubusercontent.com/erwangranger/air1
+    local github_branch=dev/alpha
+    local github_file=README.md
+    local github_full_url=${github_url_base}/${github_branch}/${github_file}
+    air1_version
+    printf "Generation of file ~/.air1.sh "
+    curl -fsSL ${github_full_url} \
+            | awk '/^```bash/{flag=1;next}/^```/{flag=0}flag' \
+            > ~/.air1.sh
+
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        printf "has failed!\n"
+    else
+        printf "successful!\n"
+    fi
+
+
+    local bashrc_loc="${HOME}/.bashrc"
+    local air1_loc="${HOME}/.air1.sh"
+    printf "Updating your ${bashrc_loc} file "
+
+    ## if the line already exists, we remove it.
+    local bashrc_remove_air1="sed -i.bak '/\.air1\.sh/d' ${bashrc_loc}"
+    bash -c " ${bashrc_remove_air1} "
+
+    ## if the file exists, we add a reference to in .bashrc
+    echo "[[ -e \"${air1_loc}\" ]] && source \"${air1_loc}\" || { echo \"ERROR: ${air1_loc} does not exist\" 1>&2 ; exit 1; }" >>  ${bashrc_loc}
+
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        printf "has failed!\n"
+    else
+        printf "has worked!\n"
+    fi
+}
+```
+
+</details>
+
+
 ### Update it
 
 ### Remove it
@@ -104,12 +160,22 @@ function air1_help(){
 
 <!--
 ```bash
-     "
+"
 }
 ```
 -->
 
-### trying it locally
+### Locally
+
+#### Seeing the generated code
+
+If you want to see the entirety of the generated `air1` function, execute:
+
+```sh
+cat README.md | awk '/^```bash/{flag=1;next}/^```/{flag=0}flag'
+```
+
+#### Try it locally
 
 Assuming that you have the README.md in the current directory.
 
@@ -148,6 +214,11 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             shift
             air1_help
+            shift
+            ;;
+        --install|--deploy)
+            shift
+            air1_install
             shift
             ;;
     esac
